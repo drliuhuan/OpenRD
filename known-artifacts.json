@@ -1,0 +1,162 @@
+{
+  "demo_installers": [
+    {
+      "id": "rddemo-1999-v10",
+      "name": "1999 v1.0 demo (RDDEMO.EXE)",
+      "bytes": 5171712,
+      "sha1": "0418fe4abcf97356bdeb4cd0e8e91ee796de8abc",
+      "sha256": "79510a241c3d81c4da2ab6d82b0a30e9a3402b75eaf58e861b924bc0828685bf"
+    },
+    {
+      "id": "rddemo-1999-v11",
+      "name": "1999 v1.1 demo (RDDEMO.EXE from PC Gamer UK #72)",
+      "bytes": 5174784,
+      "sha1": "cc4b01f4b1977addb01b4f84ef68c1e0eaaea160",
+      "sha256": "21130a68530313839d2ca1b58d6de3d3fe46733219bdd60aaa27f3550a65e271"
+    },
+    {
+      "id": "rddemo-v17-full",
+      "name": "demo v1.7 full installer (rddemo.exe)",
+      "bytes": 10464256,
+      "sha1": "7828040d2c3a2ee5fef544e4cfe7bacd8cd427af",
+      "sha256": "2b114f438106d9651d1662e6b92772262a62a98a8b01eb5b91065a1667c12e8e"
+    },
+    {
+      "id": "rddemo-2003-final",
+      "name": "demo final (2003-11) RDDEMO.exe",
+      "bytes": 12098514,
+      "sha1": "a5ab9d993860dc236396017e073143ac2b6e0701",
+      "sha256": "772b766d7cad8e4b5f507a645df203557c6a526692ba599003ce7f67412b87ee"
+    },
+    {
+      "id": "rd-demo-2-0",
+      "name": "Rich Diamond 2.0 demo",
+      "bytes": 11862257,
+      "sha1": "03231c2e2b5c8d0add4206477dee8608886518c1",
+      "sha256": "e0b6e2d5efffa22afebbf97d468e35c22b12c535474862fb757f91dc0e4f9a89"
+    },
+    {
+      "id": "rddemo-small",
+      "name": "NSIS small demo (rddemosmall.exe)",
+      "bytes": 11206538,
+      "sha1": "538d4006c539ccaed94ef65450f3f5a53e81fb67",
+      "sha256": "34ae16f05f709d2312e0a2402b2772e591283ea6408d389d485a28b2272744ba"
+    },
+    {
+      "id": "rd-1x-21-upgrade",
+      "name": "1.x -> 2.1 upgrade package",
+      "bytes": 7044487,
+      "sha1": "428cef608415fc941740f9754e7fb45b8b54b166",
+      "sha256": "80252141c3282e084e91f0d265b155940a4e54798dd7c7e945d452c613fcca0d"
+    },
+    {
+      "id": "rddemo-2001-truncated",
+      "name": "truncated archive capture (2001-04-26)",
+      "bytes": 299008,
+      "sha1": "6e761702cc8afc10b7054373bf1c297744194744",
+      "sha256": "4329ee568d6423ef1cebdbe51389672414c79cceb95ab8b3e68e3e18756f98f4"
+    },
+    {
+      "id": "rddemo-2000-truncated",
+      "name": "truncated capture (2000-08-15)",
+      "bytes": 1048330,
+      "sha1": "3e43d7481da1e44296ea2260a641042cafff7e39",
+      "sha256": "2048ae56aec3bea18e47f76920c27de37cf3cbcf623aed2018cee4078f80bf7b"
+    }
+  ],
+  "archives": [
+    {
+      "id": "shareplay-051999",
+      "file": "SharePlay 05-1999 (DE) (1999) (Publish Verlag GmbH).7z",
+      "bytes": 541204598,
+      "md5": "b567e98735728906aa5e875ff89ef41c",
+      "item": "https://archive.org/details/SharePlay_05-1999-1999-DE-trgf"
+    },
+    {
+      "id": "revista-48",
+      "file": "CDROM48.iso",
+      "bytes": 639844352,
+      "md5": "2f2d4fb79b345d4e6a6988aeba2a6fe7",
+      "item": "https://archive.org/details/revista_cdrom_48"
+    },
+    {
+      "id": "pcg-72a",
+      "file": "PCG_72A.7z",
+      "bytes": 690186543,
+      "md5": "73e1be7db21fd9acea8ddc2d792c83a1",
+      "item": "https://archive.org/details/pcg-72-a.-7z"
+    },
+    {
+      "id": "rich-diamond-zip",
+      "file": "Rich Diamond.zip",
+      "bytes": 78684603,
+      "md5": "2803a9737d485e3e41445d3a68e30fec",
+      "item": "https://archive.org/details/rich-diamond"
+    },
+    {
+      "id": "rich-diamond-hd-zip",
+      "file": "Rich Diamond (ver. Full HD).zip",
+      "bytes": 95045365,
+      "md5": "1594e5d6fe32f2e9652458bfb0868cbc",
+      "sha1": "555799bbaef3f81105ad5a0974cd094f400cd35b",
+      "item": "https://archive.org/details/rich-diamond"
+    }
+  ],
+  "level_files": [
+    {
+      "id": "demo-lvs",
+      "file": "Demo.lvs (Original Packs)",
+      "bytes": 2820,
+      "sha256": "3e4d2fd69c5c317b14ac8e4f324de4ef33ed6de923190eeb4dea946a54c96102",
+      "where": "Rich Diamond (ver. Full HD).zip -> Rich Diamond HD/Level Packs/Original Packs/Demo.lvs",
+      "format": "ST1 (plaintext)",
+      "levels": 5
+    },
+    {
+      "id": "original-richdiamond-lvs",
+      "file": "Rich Diamond.lvs (Original Packs)",
+      "bytes": 31000,
+      "sha256": "5baecc1a856da911d215bc0684110a8a4fd88e006bfb26b9bcbda94b5a705929",
+      "where": "Rich Diamond (ver. Full HD).zip -> Rich Diamond HD/Level Packs/Original Packs/Rich Diamond.lvs",
+      "format": "CCLS (old container)",
+      "levels": 80
+    },
+    {
+      "id": "richdimd-lvs-2x",
+      "file": "RichDimd.lvs (v2.0 / 2003-final / upgrade installers)",
+      "bytes": 26985,
+      "bytes_plain": 49340,
+      "sha256": "146d5c1292ceaef151aa303e3f4cddc2ac41da0c58c8cae6ef4dde36a19d8e76",
+      "sha256_plain": "6ed446b6d96a85524e822e7c69e85b0d5e61f4b25283761e64a04e27199293d1",
+      "format": "0xCA -> ST1",
+      "levels": 80
+    },
+    {
+      "id": "richdimd-lvs-nsis",
+      "file": "RichDimd.lvs (NSIS small demo)",
+      "bytes": 19690,
+      "bytes_plain": 31000,
+      "sha256": "af515d23f5e975596ea5066771c7bcc6ad44ef0cbfc9904e0916f394ea9e5da2",
+      "sha256_plain": "210143f75ae130d7032aa30a897a2be749989248a7839a7c52a67d5d3d3ed827",
+      "format": "0xCA -> CCLS",
+      "levels": 80
+    },
+    {
+      "id": "welcome-lv",
+      "file": "welcome.lv",
+      "bytes": 648,
+      "sha256": "1333735033da130f359356eeea39c7fefd80bbfba1531c3e4736f6d9f38addb1",
+      "where": "v2.x / NSIS 安装包: Levels/welcome.lv（各包相同）",
+      "format": "LV2",
+      "levels": 1
+    },
+    {
+      "id": "v17-embedded-levelset",
+      "file": "v1.7 demo embedded level set (carved from cceng.exe)",
+      "bytes": 4202,
+      "sha256": "5359b0c0aa47e07e943b30d8b694056a53acdf28addccac95aa3979ef34ad485",
+      "format": "ST1 (embedded in EXE)",
+      "levels": 7
+    }
+  ]
+}

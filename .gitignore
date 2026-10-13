@@ -1,0 +1,53 @@
+# Private inputs and all generated data
+/evidence/
+/outputs/
+/data/
+/imports/
+/private-inputs/
+/dist/
+/publish/
+/research/private-inputs/
+/research/intake/
+/research/version-probe-*/
+/web/assets/
+/assets/
+.env
+.env.*
+__pycache__/
+*.pyc
+*.pending
+*.zip
+*.exe
+*.dll
+*.cab
+*.iso
+*.mdf
+*.mds
+*.gin
+*.byt
+*.lvs
+*.lv
+*.pcx
+*.pci
+*.imc
+*.thm
+*.mid
+*.wav
+*.avi
+*.mp3
+*.m4a
+*.mp4
+*.png
+*.sqlite*
+*.db
+
+# User-provided project branding only (not extracted game assets)
+!/docs/assets/branding/*.png
+
+# User-authorized documentation screenshots (ordinary game entry)
+!/docs/assets/screenshots/*.png
+
+# User-supplied runtime inputs
+/game/
+
+/local-tools/

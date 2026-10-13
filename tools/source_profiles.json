@@ -1,0 +1,236 @@
+{
+  "profiles": [
+    {
+      "id": "rddemo-1999-v10",
+      "label": "1999 demo / provider label v1.0",
+      "package_sha256": "79510a241c3d81c4da2ab6d82b0a30e9a3402b75eaf58e861b924bc0828685bf",
+      "required_sha256": [
+        "f59937905a23cdc45146c50d15f3e833c78c35afc30237b08805234c82c1fdd4",
+        "c8bee54c48c31859a22668a65f69f1be20166de85deb24ce345c4a3176b7457b",
+        "3ee7330a6d8de862edc749b743af2fecb6a754b364cc2f228db41356215c0fab"
+      ],
+      "anchors": [
+        {
+          "path": "installshield-98b0b28f/Program_Files/RDDemo.byt",
+          "sha256": "f59937905a23cdc45146c50d15f3e833c78c35afc30237b08805234c82c1fdd4"
+        },
+        {
+          "path": "installshield-98b0b28f/Program_Files/RDDemo.gin",
+          "sha256": "c8bee54c48c31859a22668a65f69f1be20166de85deb24ce345c4a3176b7457b"
+        },
+        {
+          "path": "installshield-98b0b28f/Win32_Executable/cceng.exe",
+          "sha256": "3ee7330a6d8de862edc749b743af2fecb6a754b364cc2f228db41356215c0fab"
+        }
+      ],
+      "level_support": "early maps pending",
+      "label_basis": "package name/catalog claim; independently verified hashes and formats",
+      "access_status": "not inferred from map count or installed-folder contents"
+    },
+    {
+      "id": "rddemo-1999-v11",
+      "label": "1999 demo / provider label v1.1",
+      "package_sha256": "21130a68530313839d2ca1b58d6de3d3fe46733219bdd60aaa27f3550a65e271",
+      "required_sha256": [
+        "f59937905a23cdc45146c50d15f3e833c78c35afc30237b08805234c82c1fdd4",
+        "438a8f31fa94fab985ae88f424b260f81f74df78b5c5a090d8ff0193b779f92d",
+        "1537b6346b0013d0f73863d6bdb46853c7085592d2fcb9c53364d79cdd68d278"
+      ],
+      "anchors": [
+        {
+          "path": "installshield-98b0b28f/Program_Files/RDDemo.byt",
+          "sha256": "f59937905a23cdc45146c50d15f3e833c78c35afc30237b08805234c82c1fdd4"
+        },
+        {
+          "path": "installshield-98b0b28f/Program_Files/RDDemo.gin",
+          "sha256": "438a8f31fa94fab985ae88f424b260f81f74df78b5c5a090d8ff0193b779f92d"
+        },
+        {
+          "path": "installshield-98b0b28f/Win32_Executable/cceng.exe",
+          "sha256": "1537b6346b0013d0f73863d6bdb46853c7085592d2fcb9c53364d79cdd68d278"
+        }
+      ],
+      "level_support": "early maps pending",
+      "label_basis": "package name/catalog claim; independently verified hashes and formats",
+      "access_status": "not inferred from map count or installed-folder contents"
+    },
+    {
+      "id": "rddemo-v17-full",
+      "label": "demo / provider label v1.7",
+      "package_sha256": "2b114f438106d9651d1662e6b92772262a62a98a8b01eb5b91065a1667c12e8e",
+      "required_sha256": [
+        "66c69ea42517d24bc3a4fd347879623f8c745499b85c3dbd062ca7d4de16e235"
+      ],
+      "anchors": [
+        {
+          "path": "installshield-98b0b28f/Win32_Executable/cceng.exe",
+          "sha256": "66c69ea42517d24bc3a4fd347879623f8c745499b85c3dbd062ca7d4de16e235"
+        }
+      ],
+      "level_support": "embedded ST1, 7 maps",
+      "label_basis": "package name/catalog claim; independently verified hashes and formats",
+      "access_status": "not inferred from map count or installed-folder contents"
+    },
+    {
+      "id": "rd-demo-2-0",
+      "label": "2.0 demo package",
+      "package_sha256": "e0b6e2d5efffa22afebbf97d468e35c22b12c535474862fb757f91dc0e4f9a89",
+      "required_sha256": [
+        "146d5c1292ceaef151aa303e3f4cddc2ac41da0c58c8cae6ef4dde36a19d8e76",
+        "a7e5673557eda33a617e02329ab0ba2391b1b3270a9f321c35e975bbbafd844a",
+        "caafebe3d6e4554d55ebb55be7fbc006362de8d9def7c74eec4ece2bdc49a7c5",
+        "f2cdc219fc9085adfbb7f1a6baa78fadcdec74bdf7b87c4dc1454ddde46ac28a"
+      ],
+      "anchors": [
+        {
+          "path": "installshield-98b0b28f/Program_Executable_Files/LevelSets/RichDimd.lvs",
+          "sha256": "146d5c1292ceaef151aa303e3f4cddc2ac41da0c58c8cae6ef4dde36a19d8e76"
+        },
+        {
+          "path": "installshield-98b0b28f/Program_Executable_Files/Rich Diamond.byt",
+          "sha256": "a7e5673557eda33a617e02329ab0ba2391b1b3270a9f321c35e975bbbafd844a"
+        },
+        {
+          "path": "installshield-98b0b28f/Program_Executable_Files/Rich Diamond.exe",
+          "sha256": "caafebe3d6e4554d55ebb55be7fbc006362de8d9def7c74eec4ece2bdc49a7c5"
+        },
+        {
+          "path": "installshield-98b0b28f/Program_Executable_Files/Rich Diamond.gin",
+          "sha256": "f2cdc219fc9085adfbb7f1a6baa78fadcdec74bdf7b87c4dc1454ddde46ac28a"
+        }
+      ],
+      "level_support": "CA -> ST1, 80 stored maps",
+      "label_basis": "package name/catalog claim; independently verified hashes and formats",
+      "access_status": "not inferred from map count or installed-folder contents"
+    },
+    {
+      "id": "rddemo-2003-final",
+      "label": "2003 demo package",
+      "package_sha256": "772b766d7cad8e4b5f507a645df203557c6a526692ba599003ce7f67412b87ee",
+      "required_sha256": [
+        "146d5c1292ceaef151aa303e3f4cddc2ac41da0c58c8cae6ef4dde36a19d8e76",
+        "c4482142aca007443870e8d6bd480fd02e3c40b944bda1f95fb3690d129c42f3",
+        "699effcf6846670124519443868533cc131a21938c0f2d5ee63e4354b79691a1",
+        "0cca42ac874891a892e49f8f20cf9107427e385b733a0ae9aaa925460f22cf64"
+      ],
+      "anchors": [
+        {
+          "path": "installshield-98b0b28f/Program_Executable_Files/LevelSets/RichDimd.lvs",
+          "sha256": "146d5c1292ceaef151aa303e3f4cddc2ac41da0c58c8cae6ef4dde36a19d8e76"
+        },
+        {
+          "path": "installshield-98b0b28f/Program_Executable_Files/Rich Diamond.byt",
+          "sha256": "c4482142aca007443870e8d6bd480fd02e3c40b944bda1f95fb3690d129c42f3"
+        },
+        {
+          "path": "installshield-98b0b28f/Program_Executable_Files/Rich Diamond.exe",
+          "sha256": "699effcf6846670124519443868533cc131a21938c0f2d5ee63e4354b79691a1"
+        },
+        {
+          "path": "installshield-98b0b28f/Program_Executable_Files/Rich Diamond.gin",
+          "sha256": "0cca42ac874891a892e49f8f20cf9107427e385b733a0ae9aaa925460f22cf64"
+        }
+      ],
+      "level_support": "CA -> ST1, 80 stored maps",
+      "label_basis": "package name/catalog claim; independently verified hashes and formats",
+      "access_status": "not inferred from map count or installed-folder contents"
+    },
+    {
+      "id": "rd-1x-21-upgrade",
+      "label": "1.x -> 2.1 upgrade package",
+      "package_sha256": "80252141c3282e084e91f0d265b155940a4e54798dd7c7e945d452c613fcca0d",
+      "required_sha256": [
+        "c4482142aca007443870e8d6bd480fd02e3c40b944bda1f95fb3690d129c42f3",
+        "699effcf6846670124519443868533cc131a21938c0f2d5ee63e4354b79691a1",
+        "0cca42ac874891a892e49f8f20cf9107427e385b733a0ae9aaa925460f22cf64",
+        "146d5c1292ceaef151aa303e3f4cddc2ac41da0c58c8cae6ef4dde36a19d8e76"
+      ],
+      "anchors": [
+        {
+          "path": "installshield-98b0b28f/Program_Executable_Files/Rich Diamond.byt",
+          "sha256": "c4482142aca007443870e8d6bd480fd02e3c40b944bda1f95fb3690d129c42f3"
+        },
+        {
+          "path": "installshield-98b0b28f/Program_Executable_Files/Rich Diamond.exe",
+          "sha256": "699effcf6846670124519443868533cc131a21938c0f2d5ee63e4354b79691a1"
+        },
+        {
+          "path": "installshield-98b0b28f/Program_Executable_Files/Rich Diamond.gin",
+          "sha256": "0cca42ac874891a892e49f8f20cf9107427e385b733a0ae9aaa925460f22cf64"
+        },
+        {
+          "path": "installshield-98b0b28f/Program_Executable_Files/RichDimd.lvs",
+          "sha256": "146d5c1292ceaef151aa303e3f4cddc2ac41da0c58c8cae6ef4dde36a19d8e76"
+        }
+      ],
+      "level_support": "CA -> ST1, 80 stored maps; incomplete media",
+      "label_basis": "package name/catalog claim; independently verified hashes and formats",
+      "access_status": "not inferred from map count or installed-folder contents"
+    },
+    {
+      "id": "rddemo-small",
+      "label": "small NSIS demo / collection label 2.2.1 Reduced",
+      "package_sha256": "34ae16f05f709d2312e0a2402b2772e591283ea6408d389d485a28b2272744ba",
+      "required_sha256": [
+        "af515d23f5e975596ea5066771c7bcc6ad44ef0cbfc9904e0916f394ea9e5da2",
+        "912e8916d485218f7ed544bd94170110c13815a40a62f271d1592c2c261764c0",
+        "05df4ce6f0444195e00946a12f70c5aaa7fb548fdd138f3c53b11cd7a0826283",
+        "630535a16c7a6256a906c617cf3c232688210364101906bd8ec26b60ca3beff4"
+      ],
+      "anchors": [
+        {
+          "path": "LevelSets/RichDimd.lvs",
+          "sha256": "af515d23f5e975596ea5066771c7bcc6ad44ef0cbfc9904e0916f394ea9e5da2"
+        },
+        {
+          "path": "Rich Diamond.byt",
+          "sha256": "912e8916d485218f7ed544bd94170110c13815a40a62f271d1592c2c261764c0"
+        },
+        {
+          "path": "Rich Diamond.exe",
+          "sha256": "05df4ce6f0444195e00946a12f70c5aaa7fb548fdd138f3c53b11cd7a0826283"
+        },
+        {
+          "path": "Rich Diamond.gin",
+          "sha256": "630535a16c7a6256a906c617cf3c232688210364101906bd8ec26b60ca3beff4"
+        }
+      ],
+      "level_support": "CA -> CCLS, inspection only",
+      "label_basis": "package name/catalog claim; independently verified hashes and formats",
+      "access_status": "not inferred from map count or installed-folder contents"
+    },
+    {
+      "id": "complete221",
+      "label": "NSIS installer / collection label 2.2.1 Complete",
+      "package_sha256": "0a3e04b537f3e51c31f629bc9059f110716126737c77b46f041c33ee5cf78eb9",
+      "required_sha256": [
+        "af515d23f5e975596ea5066771c7bcc6ad44ef0cbfc9904e0916f394ea9e5da2",
+        "912e8916d485218f7ed544bd94170110c13815a40a62f271d1592c2c261764c0",
+        "05df4ce6f0444195e00946a12f70c5aaa7fb548fdd138f3c53b11cd7a0826283",
+        "630535a16c7a6256a906c617cf3c232688210364101906bd8ec26b60ca3beff4"
+      ],
+      "anchors": [
+        {
+          "path": "LevelSets/RichDimd.lvs",
+          "sha256": "af515d23f5e975596ea5066771c7bcc6ad44ef0cbfc9904e0916f394ea9e5da2"
+        },
+        {
+          "path": "Rich Diamond.byt",
+          "sha256": "912e8916d485218f7ed544bd94170110c13815a40a62f271d1592c2c261764c0"
+        },
+        {
+          "path": "Rich Diamond.exe",
+          "sha256": "05df4ce6f0444195e00946a12f70c5aaa7fb548fdd138f3c53b11cd7a0826283"
+        },
+        {
+          "path": "Rich Diamond.gin",
+          "sha256": "630535a16c7a6256a906c617cf3c232688210364101906bd8ec26b60ca3beff4"
+        }
+      ],
+      "level_support": "CA -> CCLS, inspection only",
+      "label_basis": "package name/catalog claim; independently verified hashes and formats",
+      "access_status": "not inferred from map count or installed-folder contents"
+    }
+  ],
+  "note": "Content fingerprints only. Installed folders may match multiple distributions sharing the same engine/assets."
+}

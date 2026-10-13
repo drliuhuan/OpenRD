@@ -1,0 +1,25 @@
+// Web playback policy: one-shot effects, weighted samples, explicit stop/cancel.
+// Native device flags/loop mode remain under research; this is not exact mixing.
+const audioManifest=fetch('/assets/audio.json').then(r=>{if(!r.ok)throw Error('音效清单加载失败');return r.json()});
+class GameAudio {
+ constructor(){this.context=null;this.groups=new Map();this.buffers=new Map();this.voices=new Set();this.muted=false;this.generation=0;this.chain=Promise.resolve();this.ready=audioManifest.then(m=>{for(const e of m.effects||[]){const a=this.groups.get(e.id)||[];a.unshift(e);this.groups.set(e.id,a)}}).catch(e=>this.report(e));}
+ report(e){console.warn('Game audio:',e);const b=document.querySelector('#audio');if(b){b.textContent='🔇';b.title='音频不可用：'+e.message}}
+ unlock(){try{if(!this.context)this.context=new AudioContext();if(this.context.state==='suspended')this.context.resume().catch(e=>this.report(e))}catch(e){this.report(e)}}
+ reset(){this.generation++;for(const v of this.voices)v.source.stop();this.voices.clear();this.chain=Promise.resolve();}
+ toggle(){this.muted=!this.muted;if(this.muted)this.reset();else this.unlock();const b=document.querySelector('#audio');b.title=this.muted?'开启音效':'关闭音效';b.textContent=this.muted?'🔇 音效':'🔊 音效';b.setAttribute('aria-pressed',String(!this.muted));}
+ select(id){const samples=this.groups.get(id);if(!samples)return null;let value=Math.random()*samples.reduce((n,s)=>n+s.weight,0);for(const s of samples){value-=s.weight;if(value<0)return s}return samples.at(-1)}
+ consume(events){if(!events?.length)return;const generation=this.generation;this.chain=this.chain.then(async()=>{await this.ready;if(this.muted||!this.context||generation!==this.generation)return;const pending=[];for(const e of events){if(e.opcode===88||e.opcode===89){const sample=this.select(e.sound_id);if(sample)pending.unshift({event:e,sample})}else if(e.opcode===90){const i=pending.findIndex(p=>p.event.sound_id===e.sound_id);if(i>=0)pending.splice(i,1)}else if(e.opcode===86||e.opcode===87){for(const v of this.voices)if(e.opcode===87||v.id===e.sound_id)v.source.stop();const i=pending.findIndex(p=>p.event.sound_id===e.sound_id);if(e.opcode===86&&i>=0)pending.splice(i,1)}}const seen=new Set();for(const p of pending){if(seen.has(p.event.sound_id))continue;seen.add(p.event.sound_id);await this.play(p.sample,p.event.sound_id,generation)}}).catch(e=>this.report(e));}
+ async play(sample,id,generation){if(this.muted||generation!==this.generation)return;if(sample.limit===1&&[...this.voices].some(v=>v.file===sample.file))return;let buffer=this.buffers.get(sample.file);if(!buffer){buffer=fetch('/assets/audio/'+sample.file).then(r=>{if(!r.ok)throw Error('音效下载失败');return r.arrayBuffer()}).then(b=>this.context.decodeAudioData(b));this.buffers.set(sample.file,buffer);buffer.catch(()=>this.buffers.delete(sample.file))}const decoded=await buffer;if(this.muted||generation!==this.generation)return;const source=this.context.createBufferSource(),gain=this.context.createGain();source.buffer=decoded;gain.gain.value=.65;source.connect(gain).connect(this.context.destination);const voice={id,file:sample.file,source};this.voices.add(voice);source.onended=()=>this.voices.delete(voice);source.start();}
+}
+class GameMusic {
+ constructor(){this.audio=new Audio();this.audio.id='background-music';this.audio.hidden=true;document.body.append(this.audio);this.audio.preload='metadata';this.audio.loop=true;this.audio.volume=.35;this.enabled=true;this.unlocked=false;this.track=null;this.generation=0;this.files=null;this.pending=null;this.ready=audioManifest.then(m=>{this.files=new Set((m.files||[]).map(f=>f.file));if(this.pending)this.update(this.pending)}).catch(e=>console.warn('Game music manifest:',e));this.audio.addEventListener('error',()=>{const b=document.querySelector('#music');b.title='音乐加载失败';console.warn('Game music load failed')});}
+ unlock(){this.unlocked=true;this.play();}
+ play(){if(!this.enabled||!this.unlocked||!this.track)return;const generation=this.generation;this.audio.play().catch(e=>{if(generation===this.generation&&e.name!=='AbortError'&&e.name!=='NotAllowedError')console.warn('Game music:',e)})}
+ update(state){this.pending=state;if(!this.files)return;const track=state.music,file=track?.filename.replace(/\.mid$/i,'.m4a').toLowerCase();if(!track||!this.files.has(file)){this.audio.pause();this.track=null;return}if(this.track?.id!==track.id){this.generation++;this.audio.pause();this.track=track;this.audio.src='/assets/audio/'+file;this.play();}}
+ toggle(){this.enabled=!this.enabled;if(this.enabled)this.unlock();else{this.generation++;this.audio.pause()}this.reflect();}
+ reflect(){const b=document.querySelector('#music');b.textContent=this.enabled?'♫ 音乐':'♫̸ 音乐';b.setAttribute('aria-pressed',String(this.enabled));b.title=this.enabled?'关闭音乐':'开启音乐';}
+}
+const gameMusic=new GameMusic();
+const gameAudio=new GameAudio();
+document.addEventListener('pointerdown',()=>{gameAudio.unlock();gameMusic.unlock()},{capture:true});
+document.addEventListener('keydown',()=>{gameAudio.unlock();gameMusic.unlock()},{capture:true});
