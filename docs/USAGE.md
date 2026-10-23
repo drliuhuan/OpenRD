@@ -161,3 +161,9 @@ Matching baseline inputs support local saves and rankings. Sources whose native 
 原始动作帧与位移、主题选择及限制见[来源动画](SOURCE_ANIMATIONS.md)。未知试玩范围的来源只开放素材动画查看。
 
 See [source animations](SOURCE_ANIMATIONS.md) for frames, motion and themes. Unverified trial sources expose asset animations only.
+
+
+First-five trial update (2026-10-23): see [source animations](SOURCE_ANIMATIONS.md).
+
+
+First-five trial update (2026-10-23): see [source animations](SOURCE_ANIMATIONS.md).

@@ -1,5 +1,9 @@
 # 来源动画 / Source animations
 
+2026-10-23 更新：按用户确认开放七个已审计来源的前 5 关，以编号和地图内容指纹共同核对。第 6 关及后续继续关闭；这不是全部原版访问逻辑已认证的声明。v1.7 首关的尾部未声明 tile 255 已按原始 41799E..4179B6 的跳过行为兼容，保留空格 class/parameter=0，不替换地板、不改原地图；现在七包各五关可进入。旧导入目录可直接使用新服务代码，无须重新导入。
+
+早于 2.0 的 CCIg11 地板、水、岩浆、坑及冰面基础图块先进入地面绘制层，避免不透明 PCX 地面跨度覆盖墙体或人物。Hidden 背景保留遮挡层，来源角色进出动画保留源格深度锚点；缓存绘制与完整深度绘制逐像素对照。原版最终窗口像素、PCX 特殊阴影和真实计时仍未完整认证。
+
 已接入本地试玩数据的 GIN 动作状态、连续精灵与位移；新版主题动作使用该来源自己的 IMC 运动链。v1.7 安装包中的内嵌 GIN 也会自动提取。需要重新导入旧的 v1.7 输出目录。
 
 Source animation playback now uses the input's own GIN states, sprite frames and offsets. Modern theme actions use that source's IMC motion chains. Embedded v1.7 GIN is extracted automatically; reimport old v1.7 outputs.

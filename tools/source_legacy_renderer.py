@@ -39,6 +39,14 @@ def encode_crop(surface,width,rectangle,selector,keys):
 
 
 class LegacyRenderer(ResourceRenderer):
+    def cell_rank(self,cell):
+        # CCIg11 floor/water/lava/pit/ice backgrounds are a ground pass.
+        # Their opaque PCX spans must precede raised scenery and objects even
+        # when a ground tile's projected baseline is farther down the screen.
+        if cell.get('cls') in (2,3,4,8,11) and not cell.get('covered'):
+            return 0
+        return super().cell_rank(cell)
+
     def __init__(self,gin,root):
         root=Path(root);bitmaps={};palette=None;records=[]
         for r in gin['records']:

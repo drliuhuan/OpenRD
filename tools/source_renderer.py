@@ -274,6 +274,9 @@ class ResourceRenderer:
             return entries[target][2]
         return r['base_resource_id']
 
+    def cell_rank(self, cell):
+        return .8 if cell.get('corpse') else .75 if cell.get('filled') else 1
+
     def render(self, state, time=0, bindings=None, theme='',trace=False,view_size=None,camera=None):
         bindings=dict(self.themes[theme]['bindings'] if theme else (bindings or {}))
         bindings['$cells']=state['cells']
@@ -314,7 +317,7 @@ class ResourceRenderer:
                         i=terrain_index(cells,x,y,bit)
                         if i+1<len(layer):add(x,y,layer[i+1],0 if layer[0]==1 else 1,0 if layer[0]==1 else .5)
                 add(x,y,c['resource'],5 if c.get('covered') else 1,
-                    .8 if c.get('corpse') else .75 if c.get('filled') else 1)
+                    self.cell_rank(c))
         if cached_calls is None:
             self.calls_cache.append((cells,list(calls)))
             if len(self.calls_cache)>4:self.calls_cache.pop(0)

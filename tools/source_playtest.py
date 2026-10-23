@@ -20,21 +20,34 @@ class ModelGame:
         self.theme = theme
         self.playback=None
         self.graphics_counts={}
+        self.occlusion_sources={}
         self.object_ids = {r['byte_raw']:r['words_raw'][3]&255 for r in byt['records'] if r['opcode']==2}
         self.visual_gin=expand_motion(getattr(renderer,'source_gin',renderer.gin),renderer,theme) if renderer else None
-        self.world = World(level['rows'], byt,self.visual_gin,initial_graphics=bool(renderer),project_graphics=bool(renderer))
+        definitions={r['tile_code']:r for r in reversed(byt['records']) if r['opcode']==1}
+        rows=level['rows']
+        # The audited v1.7 map has a lone undefined 255 in a trailing row.
+        # 41799E..4179B6 skips unmatched definitions, leaving zeroed cells.
+        # Omit only an undefined suffix; never shift subsequent coordinates.
+        if level.get('unknown_tiles')==[255] and level.get('access_allowed'):
+            rows=[]
+            for row in level['rows']:
+                end=len(row)
+                while end and row[end-1] not in definitions:end-=1
+                if any(tile not in definitions for tile in row[:end]):raise ValueError('Unsupported interior map tile')
+                rows.append(row[:end])
+        self.world = World(rows, byt,self.visual_gin,initial_graphics=bool(renderer),project_graphics=bool(renderer))
         if renderer:
             self.world.graphic_map_size=renderer.map_size
             self.world.graphic_masks=bytearray(renderer.map_size[0]*renderer.map_size[1])
             definitions={}
             for r in byt['records']:
                 if r['opcode']==1:definitions.setdefault(r['tile_code'],r)
-            for y,row in enumerate(level['rows']):
+            for y,row in enumerate(rows):
                 for x,tile in enumerate(row):
                     self.world.graphic_masks[y*renderer.map_size[0]+x]=definitions[tile]['last_byte_raw']
         self.world.initialize_new_display_slots()
         self.world.apply_collection_setting_slice(0)
-        self.world.enable_map_rules(level['rows'])
+        self.world.enable_map_rules(rows)
         self.world.schedule_map_load_objects()
         result = self.world.advance_input_cycle()
         self.diagnostic = result.get('diagnostic') if not result['complete'] else None
@@ -51,6 +64,8 @@ class ModelGame:
     def drain_graphics(self,frames):
         w=self.world
         if not self.renderer:return
+        self.occlusion_sources={id(vm):tuple(w.graphical_instances[id(vm)].position)
+            for _,vm in w.instances if id(vm) in w.graphical_instances}
         for program,vm in w.instances:
             graphic=w.graphical_instances.get(id(vm))
             for request in vm.graphics[self.graphics_counts.get(id(vm),0):]:
@@ -59,7 +74,9 @@ class ModelGame:
                 else:w.resources[position]=request['resource_id']
             self.graphics_counts[id(vm)]=len(vm.graphics)
         for _ in range(4096):
-            if not w.graphics_queue.nodes:return
+            if not w.graphics_queue.nodes:
+                self.occlusion_sources={}
+                return
             if len(frames)>=8192:raise ValueError('Animation playback exceeds frame budget')
             w.advance_graphics(1,choose=lambda count:0)
             w.advance_overlays(1)
@@ -78,6 +95,7 @@ class ModelGame:
         from byt_map_selector import select_background
         cells = [[dict(tile=self.by_class.get((w.classes[y*128+x], w.parameters[y*128+x]), tile),
                        cls=w.classes[y*128+x], parameter=w.parameters[y*128+x],
+                       covered=bool(w.parameters[y*128+x]&16),
                        mask=w.graphic_masks[y*w.graphic_map_size[0]+x] if w.graphic_masks is not None else 0,
                        resource=(select_background(w.definitions,w.classes[y*128+x],w.parameters[y*128+x])['resource_id']
                                  if any(not vm.disposed and id(vm) in w.graphical_instances for _,vm in w.objects.get((x,y),[]))
@@ -93,6 +111,7 @@ class ModelGame:
             if vm.disposed and not pending:continue
             item=dict(uid=uid,x=vm.position[0],y=vm.position[1],program=p,object=self.object_ids.get(p,0),action=0)
             if graphic:item.update(pixel=list(graphic.position),resource=graphic.resource)
+            if id(vm) in self.occlusion_sources:item['occlusion_source']=list(self.occlusion_sources[id(vm)])
             actors.append(item)
         return dict(level=self.level['id'], dataset=self.level.get('dataset'), cells=cells, player=list(w.player.position) if w.player and not w.player.disposed else None,
                     actors=actors,
@@ -185,7 +204,7 @@ function updateAnimationActions(){animationAction.replaceChildren();const item=a
 animationObject.onchange=()=>{const item=animationCatalog[Number(animationObject.value)];if(item){const select=document.getElementById('themes');select.replaceChildren();for(const t of [{id:'',name:'GIN 默认素材'},...(themeCatalog[item.dataset||'default']||[])]){const o=document.createElement('option');o.value=t.id;o.textContent=t.name;select.append(o);}select.hidden=select.options.length===1;if(select.options.length>1)select.selectedIndex=1;}updateAnimationActions();};
 document.getElementById('animation-play').onclick=async()=>{if(busy)return;const item=animationCatalog[Number(animationObject.value)];if(!item)return;setBusy(true);try{const result=await api('/api/animation',{dataset:item.dataset,object:item.object,action:Number(animationAction.value),theme:document.getElementById('themes').value});token=result.token;state=result.state;camera=null;await playResourceFrames(state,state.playback);await draw(state);}catch(e){document.getElementById('status').textContent=e.message;}finally{setBusy(false);}};
 let ambientPending=false,lastAmbient=0;async function ambient(){const now=performance.now(),interval=frame&&frame.width*frame.height>4000000?200:40;if(!busy&&!ambientPending&&state?.mode==='Source resource display'&&!document.hidden&&!matchMedia('(prefers-reduced-motion: reduce)').matches&&now-lastAmbient>=interval){ambientPending=true;lastAmbient=now;idleController=new AbortController();try{await draw(state,{idle:true});}catch(e){if(e.name!=='AbortError'&&!e.message.includes('Stale'))document.getElementById('status').textContent=e.message;}finally{ambientPending=false;}}requestAnimationFrame(ambient);}requestAnimationFrame(ambient);
-api('/api/catalog').then(async c=>{preview=c.preview||{};previews=c.previews||{};themeCatalog=c.themes||{};animationCatalog=c.animations||[];animationObject.replaceChildren();animationCatalog.forEach((a,i)=>{const o=document.createElement('option');o.value=i;o.textContent=(a.dataset?String(a.dataset)+' / ':'')+String(a.object);animationObject.append(o);});updateAnimationActions();document.getElementById('animation-controls').hidden=!animationCatalog.length;c.levels.forEach(l=>levelDatasets[l.id]=l.dataset);const components=[...Object.values(preview).flat(),...Object.values(previews).flatMap(p=>Object.values(p).flat())];await Promise.all([...new Set(components.map(p=>p.path))].map(path=>new Promise(resolve=>{const i=new Image();i.onload=()=>{images[path]=i;resolve();};i.onerror=resolve;i.src='/media/'+encodeURIComponent(path);})));const select=document.getElementById('levels');c.levels.forEach(l=>{const o=document.createElement('option');o.value=l.id;o.textContent=l.name+(l.variant===null?'':` · 映射表 ${l.variant}`);o.disabled=!l.loadable;select.append(o);});c.media.forEach(m=>{const p=document.createElement('p'),a=document.createElement('a');a.textContent=m.source;a.href='/media/'+encodeURIComponent(m.path);a.target='_blank';a.rel='noopener';p.append(a);document.getElementById('media').append(p);});updateThemes();if(c.default_theme)document.getElementById('themes').value=c.default_theme;if(c.levels.some(l=>l.loadable))start();else{document.getElementById('notice').textContent='此来源关卡范围待核实；可查看原始动作动画。Source levels remain restricted; source animation preview is available.';animationObject.onchange();}}).catch(e=>document.getElementById('status').textContent=e.message);
+api('/api/catalog').then(async c=>{preview=c.preview||{};previews=c.previews||{};themeCatalog=c.themes||{};animationCatalog=c.animations||[];animationObject.replaceChildren();animationCatalog.forEach((a,i)=>{const o=document.createElement('option');o.value=i;o.textContent=(a.dataset?String(a.dataset)+' / ':'')+String(a.object);animationObject.append(o);});updateAnimationActions();document.getElementById('animation-controls').hidden=!animationCatalog.length;c.levels.forEach(l=>levelDatasets[l.id]=l.dataset);const components=[...Object.values(preview).flat(),...Object.values(previews).flatMap(p=>Object.values(p).flat())];await Promise.all([...new Set(components.map(p=>p.path))].map(path=>new Promise(resolve=>{const i=new Image();i.onload=()=>{images[path]=i;resolve();};i.onerror=resolve;i.src='/media/'+encodeURIComponent(path);})));const select=document.getElementById('levels');c.levels.forEach(l=>{const o=document.createElement('option');o.value=l.id;o.textContent=l.name+(l.variant===null?'':` · 映射表 ${l.variant}`);o.disabled=!l.loadable;select.append(o);});c.media.forEach(m=>{const p=document.createElement('p'),a=document.createElement('a');a.textContent=m.source;a.href='/media/'+encodeURIComponent(m.path);a.target='_blank';a.rel='noopener';p.append(a);document.getElementById('media').append(p);});updateThemes();if(c.default_theme)document.getElementById('themes').value=c.default_theme;if(c.levels.some(l=>l.loadable)){select.value=c.levels.find(l=>l.loadable).id;start();}else{document.getElementById('notice').textContent='此来源关卡范围待核实；可查看原始动作动画。Source levels remain restricted; source animation preview is available.';animationObject.onchange();}}).catch(e=>document.getElementById('status').textContent=e.message);
 </script>'''
 
 
@@ -243,6 +262,7 @@ def serve(import_dir,host='127.0.0.1',port=8770,trusted=None):
                 if self.path=='/api/start':
                     require_playable(bundle)
                     level=levels[str(data['level'])]
+                    if not level['access_allowed']:raise ValueError('此关尚未开放；仅开放前5关，其他关卡仍在核实。')
                     if not level['loadable']:raise ValueError('Unsupported tiles')
                     renderer=renderers.get(level.get('dataset'));theme=data.get('theme','')
                     if theme and (not renderer or theme not in renderer.themes):raise ValueError('Unknown source theme')
