@@ -426,8 +426,11 @@ def load_renderers(root, bundle):
         prefix=Path(next(d['bundle'] for d in bundle['datasets'] if d['id']==key)).parent.parent if key else Path('.')
         if b.get('gin'):
             gin=json.loads((root/prefix/b['gin']).read_text(encoding='utf-8'))
-            if gin['format']=='CCIg12':
-                result[key]=ResourceRenderer(gin)
+            if gin['format'] in ('CCIg11','CCIg12'):
+                if gin['format']=='CCIg11':
+                    from source_legacy_renderer import LegacyRenderer
+                    result[key]=LegacyRenderer(gin,root/prefix)
+                else:result[key]=ResourceRenderer(gin)
                 result[key].bind_definitions(json.loads((root/prefix/b['byt']).read_text(encoding='utf-8')))
                 result[key].load_themes(root/prefix)
     return result

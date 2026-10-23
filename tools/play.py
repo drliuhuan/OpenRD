@@ -23,8 +23,8 @@ def _prepare_selected(source,cache=None,mode='auto',seven='7z',unshield=None,eng
     cache=Path(cache or ROOT/'imports/runs').resolve()
     if source.is_dir() and (source==cache or source in cache.parents):
         raise ValueError('The run directory must be outside the input folder')
-    if mode not in ('auto','baseline','source'):raise ValueError('Unknown preparation mode')
-    baseline=can_prepare(source) if mode!='source' else False
+    if mode not in ('auto','baseline','source','animation'):raise ValueError('Unknown preparation mode')
+    baseline=can_prepare(source) if mode not in ('source','animation') else False
     if mode=='baseline' and not baseline:raise ValueError('Input is not the verified ISO baseline or matching game folder')
     cache.mkdir(parents=True,exist_ok=True)
     run=Path(tempfile.mkdtemp(prefix='run-',dir=cache))
@@ -51,10 +51,12 @@ def _prepare_selected(source,cache=None,mode='auto',seven='7z',unshield=None,eng
             result=import_input(source,imported,seven,unshield,catalog if catalog.exists() else None,engine,auto_tools=auto_tools)
         bundle=json.loads((imported/'framework/bundle.json').read_text(encoding='utf-8'))
         from source_access import require_playable
-        require_playable(bundle)
+        if mode!='animation':require_playable(bundle)
+        if mode=='animation' and not (bundle.get('gin') or bundle.get('datasets')):
+            raise ValueError('No source graphics in this old import; reimport the original installer / 旧导入缺少图形，请重新导入原安装包')
         loadable=sum(bool(level.get('loadable')) for level in bundle['levels'])
-        if not loadable:raise ValueError('Input has no supported playable levels')
-        report=dict(mode='source',input=str(source),input_kind='imported-data' if result is None else result['source_kind'],
+        if not loadable and mode!='animation':raise ValueError('Input has no supported playable levels')
+        report=dict(mode='animation' if mode=='animation' else 'source',input=str(source),input_kind='imported-data' if result is None else result['source_kind'],
             levels=len(bundle['levels']),loadable=loadable,run=str(run),resources=str(imported),
             requires_iso=False,native_program_executed=False,ready=True,
             logic='Same ISO-derived CPU interpreter; source declarations are input data, not native-version equivalence')
@@ -131,7 +133,7 @@ def launch(report,host='127.0.0.1',port=None,trusted=None):
     else:
         from source_access import require_playable
         bundle=json.loads((Path(report['resources'])/'framework/bundle.json').read_text(encoding='utf-8'))
-        require_playable(bundle)
+        if report['mode']!='animation':require_playable(bundle)
         command=[sys.executable,'-S','-B',str(ROOT/'tools/source_playtest.py'),report['resources'],
             '--host',host,'--port',str(port)]
         ready='/api/catalog'
@@ -169,7 +171,7 @@ def open_browser(url):
 def main():
     ap=argparse.ArgumentParser(description=__doc__);ap.add_argument('source',type=Path,nargs='?',help='File/folder; defaults to project game folder')
     ap.add_argument('--host',default='127.0.0.1');ap.add_argument('--port',type=int,help='Fixed port; omitted: first free port starting at 8770')
-    ap.add_argument('--cache',type=Path);ap.add_argument('--mode',choices=['auto','baseline','source'],default='auto')
+    ap.add_argument('--cache',type=Path);ap.add_argument('--mode',choices=['auto','baseline','source','animation'],default='auto')
     ap.add_argument('--seven-zip',default='7z');ap.add_argument('--unshield');ap.add_argument('--engine',type=Path)
     ap.add_argument('--prepare-only',action='store_true')
     ap.add_argument('--no-browser',action='store_true',help='Do not open the default browser')

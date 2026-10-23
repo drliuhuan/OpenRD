@@ -57,6 +57,7 @@ def bind(output, report):
             media.append(dict(source=f['path'], path='raw/' + f['path']))
     graphics = None
     gin_entries = [f for f in report['files'] if 'graphics_script' in f]
+    gin_entries.extend(report.get('embedded_graphics',[]))
     if len(gin_entries) == 1:
         graphics = 'inspection/' + gin_entries[0]['path'] + '.json'
     preview={}

@@ -157,6 +157,25 @@ def inspect_tree(source, output, seven='7z', unshield=None, catalog=None, engine
                 report['files'].append(item)
                 if ext == '.exe':
                     if path.name.lower()=='cceng.exe' and 'crack' not in {x.lower() for x in path.parts}:
+                        from source_scripts import gin as parse_embedded_gin
+                        start=0
+                        while True:
+                            pos=raw.find(b'CCIg11',start)
+                            if pos<0:break
+                            start=pos+6
+                            try:
+                                candidate=parse_embedded_gin(raw[pos:])
+                                length=candidate['stop_offset']
+                                content=raw[pos:pos+length]
+                                candidate=parse_embedded_gin(content)
+                            except (ValueError,IndexError,KeyError):continue
+                            if not candidate['complete'] or candidate['sprite_count']<100 or candidate['object_count']<8:continue
+                            name=f'embedded/{digest(raw)[:12]}-{pos:x}.gin'
+                            save(output/name,content)
+                            save(output/'inspection'/(name+'.json'),json.dumps(candidate,ensure_ascii=False).encode('utf-8'))
+                            report.setdefault('embedded_graphics',[]).append(dict(path=name,source=rel,offset=pos,
+                                graphics_script={k:v for k,v in candidate.items() if k!='records'}))
+                    if path.name.lower()=='cceng.exe' and 'crack' not in {x.lower() for x in path.parts}:
                         from source_scripts import byt
                         start=0
                         while True:
